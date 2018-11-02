@@ -1,0 +1,10 @@
+<div class="btnA" >
+    <table>
+        <td *ngFor='let lst of drawStyles'>
+            <input  type="radio" name="mmm" value="lst.id" (change)="selectShape(lst.id)" >
+            <label>{{lst.id}}</label>
+        </td>
+    </table>
+    <div>{{timeValue}}</div>
+
+</div>

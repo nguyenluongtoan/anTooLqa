@@ -1,0 +1,3 @@
+<img #imageCar src="images/anh1.jpg" (load)="afterLoading()" style="display: none;" >
+<canvas #myCanvas width={{imgWidth}} height={{imgHeight}} style="border: 1px solid #ddd;" (mousemove)='mouseMoveInCanvas($event)' (mousedown)='mouseDownInCanvas($event)' (mouseup)='mouseUpInCanvas($event)' (mouseout)='dontDraw()' >
+</canvas>

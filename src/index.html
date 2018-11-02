@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Angular QuickStart</title>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('main.js').catch(function(err){ console.error(err); });
+    </script>
+    <link rel="stylesheet" href="annotation.css">
+  </head>
+
+  <body>
+    <div class="content">
+        <div class="left">
+            <my-bat>Loading AppComponent content here ...</my-bat>
+        </div>
+
+        <div class="right">
+            <p>Draw style</p>
+            <my-cat>Loading AppComponent content here ...</my-cat>
+
+            <div class="tbl1">
+                <table width="360px">
+                    <tr>
+                        <td width="60px">Work</td>
+                        <td width="80px">Review</td>
+                        <td>File name</td>
+                    </tr>
+                    <tr height="23px">
+                        <td>O</td>
+                        <td></td>
+                        <td>frame_03071997.png</td>
+                    </tr>
+                    <tr height="23px">
+                        <td>O</td>
+                        <td></td>
+                        <td>frame_03071998.png</td>
+                    </tr>
+                    <tr height="23px">
+                        <td>O</td>
+                        <td></td>
+                        <td>frame_03071999.png</td>
+                    </tr>
+                    <tr height="23px">
+                        <td></td>
+                        <td></td>
+                        <td>frame_03072000.png</td>
+                    </tr>
+                    <tr height="23px">
+                        <td></td>
+                        <td></td>
+                        <td>frame_03072001.png</td>
+                    </tr>
+                </table>
+            </div>
+
+            <form  style="padding-top: 5px">Filter:
+                <input type="text" class="filter" style="border: 1px solid black" width="100px">
+                <select class="all" style="border: 1px solid black">
+                <option selected>All</option>
+                <option>Left</option>
+                <option>Right</option>
+                </select>
+                <input type="submit" class="okall" value="OK ALL">
+                <input type="submit" class="statistic" value="Statistic">
+            </form>
+
+            <p>Function</p>
+            <input type="submit" class="sb1" value="<">
+            <input type="submit" class="sb1" value="<<">
+            <input type="submit" class="sb1" value="O">
+            <input type="submit" class="sb1" value=">">
+            <input type="submit" class="sb1" value=">>">
+            <input type="submit" class="sb2" value="Submit">
+            <input type="checkbox" class="cb1">Follow mouse
+
+            <p>Image Area</p>
+            <p>Object Property</p>
+            <div class="tbl2">
+                <table>
+                    <tr align="center">
+                        <td>Object</td>
+                        <td width="80px">Key</td>
+                        <td>Property</td>
+                        <td>Value</td>
+                    </tr>
+                    <tr align="center">
+                        <td>Vehicle</td>
+                        <td>I</td>
+                        <td>Issued</td>
+                        <td></td>
+                    </tr>
+                    <tr align="center">
+                        <td></td>
+                        <td>2</td>
+                        <td>Occluded</td>
+                        <td></td>
+                    </tr>
+                    <tr align="center">
+                        <td></td>
+                        <td>3</td>
+                        <td>Blinker state</td>
+                        <td></td>
+                    </tr>
+                    <tr align="center">
+                        <td></td>
+                        <td>1</td>
+                        <td>Type</td>
+                        <td></td>
+                    </tr>
+                    <tr align="center">
+                        <td></td>
+                        <td>E</td>
+                        <td>Truncated</td>
+                        <td></td>
+                    </tr>
+                    <tr align="center">
+                        <td></td>
+                        <td>F</td>
+                        <td>Direction</td>
+                        <td></td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <p>Review</p>
+            <input type="checkbox" class="cb1" cheked>Mouse
+            <input type="radio" style="margin-left: 100px;">OK
+            <input type="radio" style="margin-left: 20px;" checked>NG
+            <br>
+            <textarea cols="48" rows="6" style="border: 3px solid #ccc;"></textarea>
+        </div>
+        <div style="clear: both;"></div>
+
+    </div><!-- <div class="content"> -->
+
+
+    <my-app>Loading AppComponent content here ...</my-app>
+    <my-rat>Loading AppComponent content here ...</my-rat>
+
+  </body>
+</html>
