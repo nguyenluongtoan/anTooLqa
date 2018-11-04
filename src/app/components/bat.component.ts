@@ -37,20 +37,22 @@ export class BatComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(){
-        this.context = (<HTMLCanvasElement> this.myCanvas.nativeElement).getContext('2d');
+        console.log("ngAfterViewInit");
         this.element = this.imageCar.nativeElement;
-        console.log(this.imageCar);
-        console.log(this.element.width);
-
-
         //this.drawImageBackground();
     }
 
     afterLoading(){
+        console.log("afterLoading");
+        console.log(this.imageCar);
+        console.log(this.element.width);
+
         this.imgWidth = this.element.width;
         this.imgHeight = this.element.height;
-        this.context.drawImage(this.element,0,0,this.imgWidth,this.imgHeight);
-        this.draw();
+        console.log(this.imgWidth);
+        console.log(this.imgHeight);
+        this.context = (<HTMLCanvasElement> this.myCanvas.nativeElement).getContext('2d');
+        this.reDraw(this.scale,this.translatePositionX, this.translatePositionY);
         this.recs = [];
         this.combi = new Combination();
     }
@@ -67,10 +69,17 @@ export class BatComponent implements AfterViewInit {
         this.currentMousePosY = e.offsetY;
         this.the2ndPointX = e.offsetX;
         this.the2ndPointY = e.offsetY;
-        this.reDraw();
+        if(this.mouseHold){
+            this.translatePositionX = e.offsetX - this.startDragOffsetX;
+            this.translatePositionY = e.offsetY - this.startDragOffsetY;
+            this.reDraw(this.scale,this.translatePositionX, this.translatePositionY);
+        }else{
+            //this.reDraw(this.scale,0,0);
+        }
+        //this.reDraw(this.scale,0,0);
 
 
-        this.drawFullLine(this.currentMousePosX,this.currentMousePosY);
+
 
         // comment for draw rect
         if(AppService.valueShape == 'rectangle'){
@@ -83,17 +92,16 @@ export class BatComponent implements AfterViewInit {
         }
     }
 
-    private reDraw(){
+    private reDraw(scale: number, translateX: number, translateY: number){
         this.xoahet();
+        this.context.save();
+        this.context.translate(translateX, translateY);
+        this.context.scale(scale,scale);
         this.context.drawImage(this.element,0,0,this.imgWidth,this.imgHeight);
         this.drawSavedObj();
-        // this.xoahet();
-        // this.context.save();
-        // this.context.translate(translateX, translateY);
-        // this.context.scale(scale,scale);
-        // this.context.drawImage(this.element,0,0,this.imgWidth,this.imgHeight);
-        // this.context.stroke();
-        // this.context.restore();
+        this.drawFullLine(this.currentMousePosX,this.currentMousePosY);
+        this.context.stroke();
+        this.context.restore();
     }
 
     private drawFullLine (x:number,y:number){
@@ -124,6 +132,15 @@ export class BatComponent implements AfterViewInit {
         if(AppService.valueShape == 'rectangle'){
             this.get1stPoint(e);
         }
+        if(this.zoomInWhenClick){
+            this.zoomInImage();
+        }
+        if(this.zoomOutWhenClick){
+            this.zoomOutImage();
+        }
+        this.startDragOffsetX = e.offsetX - this.translatePositionX;
+        this.startDragOffsetY = e.offsetY - this.translatePositionY;
+        this.mouseHold = true;
     }
 
     private mouseUpInCanvas(e:MouseEvent){
@@ -133,6 +150,7 @@ export class BatComponent implements AfterViewInit {
         if(AppService.valueShape == 'polyline'){
             this.getNextPoint(e);
         }
+        this.mouseHold = false;
     }
 
     private get1stPoint(e:MouseEvent){
@@ -163,6 +181,9 @@ export class BatComponent implements AfterViewInit {
 
     choPhepVe: boolean;
     drawPolyline: boolean;
+    zoomInWhenClick: boolean;
+    zoomOutWhenClick: boolean;
+    mouseHold: boolean;
     private drawRect(){
         if(this.choPhepVe){
             let width = this.the2ndPointX-this.the1stPointX;
@@ -229,12 +250,21 @@ export class BatComponent implements AfterViewInit {
         this.combi.pop(ev.key);
         if(ev.key == 'z'){
             this.drawPolyline = true;
-
             console.log(this.drawPolyline);
         }
         if(ev.key == 'x'){
             this.drawPolyline = false;
              console.log(this.drawPolyline);
+        }if(ev.key == 'c'){
+            this.zoomInWhenClick = true;
+            this.zoomOutWhenClick = false;
+        }
+        if(ev.key == 'v'){
+            this.zoomOutWhenClick = true;
+            this.zoomInWhenClick = false;
+        }
+        if(ev.key == 'b'){
+            this.zoomInWhenClick = this.zoomOutWhenClick = false;
         }
     }
 
@@ -242,6 +272,21 @@ export class BatComponent implements AfterViewInit {
     onKeyDown(ev:KeyboardEvent) {
         console.log(`onKeyDown ${ev.key}!`);
         this.combi.pus(ev.key + "");
+    }
+
+    scale: number = 1.0;
+    scaleMultiplier = 0.9;
+    translatePositionX: number = 0;
+    translatePositionY: number = 0;
+    startDragOffsetX: number = 0;
+    startDragOffsetY: number = 0;
+    private zoomInImage(){
+        this.scale *= this.scaleMultiplier;
+        this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
+    }
+    private zoomOutImage(){
+        this.scale /= this.scaleMultiplier;
+        this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
     }
 }
 
