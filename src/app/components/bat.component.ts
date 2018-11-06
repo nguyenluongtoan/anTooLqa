@@ -53,6 +53,7 @@ export class BatComponent implements AfterViewInit {
         console.log(this.imgHeight);
         this.context = (<HTMLCanvasElement> this.myCanvas.nativeElement).getContext('2d');
         this.reDraw(this.scale,this.translatePositionX, this.translatePositionY);
+        //this.reDraw(1,0,0);
         this.recs = [];
         this.combi = new Combination();
     }
@@ -73,6 +74,7 @@ export class BatComponent implements AfterViewInit {
             this.translatePositionX = e.offsetX - this.startDragOffsetX;
             this.translatePositionY = e.offsetY - this.startDragOffsetY;
             this.reDraw(this.scale,this.translatePositionX, this.translatePositionY);
+
         }else{
             //this.reDraw(this.scale,0,0);
         }
@@ -283,10 +285,12 @@ export class BatComponent implements AfterViewInit {
     private zoomInImage(){
         this.scale *= this.scaleMultiplier;
         this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
+        //this.reDraw(1,0,0);
     }
     private zoomOutImage(){
         this.scale /= this.scaleMultiplier;
         this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
+        //this.reDraw(1,0,0);
     }
 }
 

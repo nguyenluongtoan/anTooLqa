@@ -1,94 +1,107 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Angular QuickStart</title>
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- Polyfill(s) for older browsers -->
-    <script src="node_modules/core-js/client/shim.min.js"></script>
+   <!--  <script src="node_modules/core-js/client/shim.min.js"></script>
 
     <script src="node_modules/zone.js/dist/zone.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script> -->
 
-    <script src="systemjs.config.js"></script>
-    <script>
-      System.import('main.js').catch(function(err){ console.error(err); });
-    </script>
-    <link rel="stylesheet" href="annotation.css">
-  </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <style type="text/css">
+    table{
+        border-collapse: collapse;
+    }
+    table td,table th{
+        border: 1px solid #e0e0e0 !important
+    }
+    .btn{
+        border-radius: 0;
+        padding: 6px 10px;    
+        display: inline-block;
+        margin-top: -2px;
+    }
+    .btn-default{
+        width: 40px;
+    }
+</style>
+</head>
 
-  <body>
-    <div class="content">
-        <div class="left">
-            <my-bat>Loading AppComponent content here ...</my-bat>
-        </div>
-
-        <div class="right">
-            <p>Draw style</p>
-            <my-cat>Loading AppComponent content here ...</my-cat>
-
-            <div class="tbl1">
-                <table width="360px">
-                    <tr>
-                        <td width="60px">Work</td>
-                        <td width="80px">Review</td>
-                        <td>File name</td>
-                    </tr>
-                    <tr height="23px">
-                        <td>O</td>
-                        <td></td>
-                        <td>frame_03071997.png</td>
-                    </tr>
-                    <tr height="23px">
-                        <td>O</td>
-                        <td></td>
-                        <td>frame_03071998.png</td>
-                    </tr>
-                    <tr height="23px">
-                        <td>O</td>
-                        <td></td>
-                        <td>frame_03071999.png</td>
-                    </tr>
-                    <tr height="23px">
-                        <td></td>
-                        <td></td>
-                        <td>frame_03072000.png</td>
-                    </tr>
-                    <tr height="23px">
-                        <td></td>
-                        <td></td>
-                        <td>frame_03072001.png</td>
-                    </tr>
-                </table>
+<body ng-app="app" ng-controller="controller">
+    <div style="padding: 20px;">
+     <div class="row">
+        <div class="col-md-8 text-center" style="position: relative;">
+            <div>
+                <!--<my-bat>Loading AppComponent content here ...</my-bat> -->
+                <div style="position: absolute;right: 16px;border: 2px solid red;">
+                    <img id="imageCar" src="images/anh1.jpg" width="100px" height="100px" >
+                </div>
+                <canvas ng-mousemove="mouseMove($event)" id="myCanvas" width="700" height="500" style="border: 1px solid #ddd;min-width: 100%;max-height: 800px;cursor: crosshair;"> </canvas>
+                <!-- (mousemove)='mouseMoveInCanvas($event)' (mousedown)='mouseDownInCanvas($event)' (mouseup)='mouseUpInCanvas($event)' (mouseout)='dontDraw()'  -->
             </div>
+        </div>
+        <div class="col-md-4">
+            <p>Draw style</p>
+            <div class="row">
+                <div class="col-md-12">
 
-            <form  style="padding-top: 5px">Filter:
-                <input type="text" class="filter" style="border: 1px solid black" width="100px">
-                <select class="all" style="border: 1px solid black">
-                <option selected>All</option>
-                <option>Left</option>
-                <option>Right</option>
-                </select>
-                <input type="submit" class="okall" value="OK ALL">
-                <input type="submit" class="statistic" value="Statistic">
-            </form>
-
-            <p>Function</p>
-            <input type="submit" class="sb1" value="<">
-            <input type="submit" class="sb1" value="<<">
-            <input type="submit" class="sb1" value="O">
-            <input type="submit" class="sb1" value=">">
-            <input type="submit" class="sb1" value=">>">
-            <input type="submit" class="sb2" value="Submit">
-            <input type="checkbox" class="cb1">Follow mouse
+                </div>
+                <div class="col-md-12" style="margin-bottom: 10px">
+                    <div style="height: 250px;overflow: auto;">
+                        <table class="table table-border">
+                            <thead>
+                                <tr>
+                                    <th>Work</th>
+                                    <th>Review</th>
+                                    <th>File name</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-cloak>
+                                <tr ng-click="showImage(item)" height="23px" ng-repeat="item in listImages" style="cursor: pointer;">
+                                    <td>O</td>
+                                    <td></td>
+                                    <td>{{item.webkitRelativePath}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-bottom: 10px">
+                    <form>Filter: 
+                        <input type="text" class="filter" style="border: 1px solid #e0e0e0;padding: 5px;" width="100px">
+                        <select class="all" style="border: 1px solid #e0e0e0;padding: 6px;">
+                            <option selected>All</option>
+                            <option>Left</option>
+                            <option>Right</option>
+                        </select>
+                        <input type="submit" class="btn btn-primary" value="OK ALL">
+                        <input type="submit" class="btn btn-success" value="Statistic">
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    Function: 
+                    <input type="submit" class="btn btn-default" value="<">
+                    <input type="submit" class="btn btn-default" value="<<">
+                    <input type="submit" onclick="$('#filepicker').click()" class="btn btn-default" value="O">
+                    <input type="submit" class="btn btn-default" value=">">
+                    <input type="submit" class="btn btn-default" value=">>">
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                    <input type="checkbox" class="cb1">Follow mouse
+                </div>
+            </div>
+            
 
             <p>Image Area</p>
             <p>Object Property</p>
             <div class="tbl2">
-                <table>
+                <table class="table">
                     <tr align="center">
                         <td>Object</td>
                         <td width="80px">Key</td>
@@ -140,15 +153,89 @@
             <input type="radio" style="margin-left: 100px;">OK
             <input type="radio" style="margin-left: 20px;" checked>NG
             <br>
-            <textarea cols="48" rows="6" style="border: 3px solid #ccc;"></textarea>
+            <textarea cols="48" rows="6" class="form-control"></textarea>
+            <br>
+            <input ng-change="uploadFile($event)" ng-model="data" type="file" style="display: none;" id="filepicker" name="fileList" webkitdirectory multiple />
+            <input type="hidden" id="fileUpload" name="">
+            <script type="text/javascript">
+                document.getElementById("filepicker").addEventListener("change", function(event) {
+                    let files = event.target.files;
+                    var objs = []
+                    for (let i=0; i<files.length; i++) {
+                        var item = {
+                            name: files[i].name,
+                            webkitRelativePath: files[i].webkitRelativePath,
+                            type: files[i].type,
+                            size: files[i].size,
+                            fakePath: URL.createObjectURL(files[i])
+                        }
+                        objs.push(item)
+                    };
+                    $("#fileUpload").val(JSON.stringify(objs))
+                    $("#eventShowListImage").click()
+                }, false);
+            </script>
         </div>
-        <div style="clear: both;"></div>
+    </div>
+    <button class="hidden" ng-click="showListImage()" id="eventShowListImage"></button>
+</div><!-- <div class="content"> -->
 
-    </div><!-- <div class="content"> -->
 
+  <!--   <my-app>Loading AppComponent content here ...</my-app>
+    <my-rat>Loading AppComponent content here ...</my-rat> -->
+    <script>
+        var widthOld = 100; // %
+        var heightOld = 100;
+        var scaleMultiplier = 0.9;
+        function DrawLine(x,y,x2,y2){
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+            ctx.beginPath();
+            ctx.moveTo(x,y);
+            ctx.lineTo(x2,y2);
+            ctx.stroke();
+        }
+        function DrawImage(width,height){
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+            var img = new Image();
+            img.src = $("#imageCar").attr("src");
+            ctx.save();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+            setTimeout(function () {
+                ctx.drawImage(img, 0, 0,img.width * width/100,img.height * height/100);
+                ctx.strokeRect(0, 0,img.width * width/100,img.height * height/100);
+            }, 100);
+            this.widthOld = width;
+            this.heightOld = height;
+        }
+        function DrawCursorPointer(x,y){
+            console.log(x + '  -  '+y)
+            var canvas = document.getElementById("myCanvas");
+            DrawLine(0,y,canvas.width,y)
+        }
 
-    <my-app>Loading AppComponent content here ...</my-app>
-    <my-rat>Loading AppComponent content here ...</my-rat>
+        DrawImage(widthOld,heightOld);
+        var app = angular.module('app', []);
+        app.controller('controller', function($scope,$timeout) {
+            $scope.listImages = [];
+            $scope.showListImage = function(event){
+             $scope.listImages= JSON.parse($("#fileUpload").val())
+             console.log($scope.listImages)
+         };
+         $scope.showImage = function(obj){
+            $("#imageCar").attr("src",obj.fakePath);
+            DrawImage(widthOld,heightOld);
+        }
 
-  </body>
+        $scope.zoomin = function(){
+
+        }
+        $scope.mouseMove = function($event){
+            console.log($event.originalEvent)
+        }
+    });
+</script> 
+</body>
 </html>

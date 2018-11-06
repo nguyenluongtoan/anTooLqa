@@ -19,20 +19,30 @@ var BatComponent = (function () {
         this.the1stPointY = 0;
         this.the2ndPointX = 0;
         this.the2ndPointY = 0;
+        this.scale = 1.0;
+        this.scaleMultiplier = 0.9;
+        this.translatePositionX = 0;
+        this.translatePositionY = 0;
+        this.startDragOffsetX = 0;
+        this.startDragOffsetY = 0;
         this.points = [];
     }
     BatComponent.prototype.ngAfterViewInit = function () {
-        this.context = this.myCanvas.nativeElement.getContext('2d');
+        console.log("ngAfterViewInit");
         this.element = this.imageCar.nativeElement;
-        console.log(this.imageCar);
-        console.log(this.element.width);
         //this.drawImageBackground();
     };
     BatComponent.prototype.afterLoading = function () {
+        console.log("afterLoading");
+        console.log(this.imageCar);
+        console.log(this.element.width);
         this.imgWidth = this.element.width;
         this.imgHeight = this.element.height;
-        this.context.drawImage(this.element, 0, 0, this.imgWidth, this.imgHeight);
-        this.draw();
+        console.log(this.imgWidth);
+        console.log(this.imgHeight);
+        this.context = this.myCanvas.nativeElement.getContext('2d');
+        this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
+        //this.reDraw(1,0,0);
         this.recs = [];
         this.combi = new Combination();
     };
@@ -47,8 +57,14 @@ var BatComponent = (function () {
         this.currentMousePosY = e.offsetY;
         this.the2ndPointX = e.offsetX;
         this.the2ndPointY = e.offsetY;
-        this.reDraw();
-        this.drawFullLine(this.currentMousePosX, this.currentMousePosY);
+        if (this.mouseHold) {
+            this.translatePositionX = e.offsetX - this.startDragOffsetX;
+            this.translatePositionY = e.offsetY - this.startDragOffsetY;
+            this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
+        }
+        else {
+        }
+        //this.reDraw(this.scale,0,0);
         // comment for draw rect
         if (app_service_1.AppService.valueShape == 'rectangle') {
             this.drawRect();
@@ -59,17 +75,16 @@ var BatComponent = (function () {
             this.drawLstPolyLine();
         }
     };
-    BatComponent.prototype.reDraw = function () {
+    BatComponent.prototype.reDraw = function (scale, translateX, translateY) {
         this.xoahet();
+        this.context.save();
+        this.context.translate(translateX, translateY);
+        this.context.scale(scale, scale);
         this.context.drawImage(this.element, 0, 0, this.imgWidth, this.imgHeight);
         this.drawSavedObj();
-        // this.xoahet();
-        // this.context.save();
-        // this.context.translate(translateX, translateY);
-        // this.context.scale(scale,scale);
-        // this.context.drawImage(this.element,0,0,this.imgWidth,this.imgHeight);
-        // this.context.stroke();
-        // this.context.restore();
+        this.drawFullLine(this.currentMousePosX, this.currentMousePosY);
+        this.context.stroke();
+        this.context.restore();
     };
     BatComponent.prototype.drawFullLine = function (x, y) {
         this.context.beginPath();
@@ -95,6 +110,15 @@ var BatComponent = (function () {
         if (app_service_1.AppService.valueShape == 'rectangle') {
             this.get1stPoint(e);
         }
+        if (this.zoomInWhenClick) {
+            this.zoomInImage();
+        }
+        if (this.zoomOutWhenClick) {
+            this.zoomOutImage();
+        }
+        this.startDragOffsetX = e.offsetX - this.translatePositionX;
+        this.startDragOffsetY = e.offsetY - this.translatePositionY;
+        this.mouseHold = true;
     };
     BatComponent.prototype.mouseUpInCanvas = function (e) {
         if (app_service_1.AppService.valueShape == 'rectangle') {
@@ -103,6 +127,7 @@ var BatComponent = (function () {
         if (app_service_1.AppService.valueShape == 'polyline') {
             this.getNextPoint(e);
         }
+        this.mouseHold = false;
     };
     BatComponent.prototype.get1stPoint = function (e) {
         this.choPhepVe = true;
@@ -186,10 +211,31 @@ var BatComponent = (function () {
             this.drawPolyline = false;
             console.log(this.drawPolyline);
         }
+        if (ev.key == 'c') {
+            this.zoomInWhenClick = true;
+            this.zoomOutWhenClick = false;
+        }
+        if (ev.key == 'v') {
+            this.zoomOutWhenClick = true;
+            this.zoomInWhenClick = false;
+        }
+        if (ev.key == 'b') {
+            this.zoomInWhenClick = this.zoomOutWhenClick = false;
+        }
     };
     BatComponent.prototype.onKeyDown = function (ev) {
         console.log("onKeyDown " + ev.key + "!");
         this.combi.pus(ev.key + "");
+    };
+    BatComponent.prototype.zoomInImage = function () {
+        this.scale *= this.scaleMultiplier;
+        this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
+        //this.reDraw(1,0,0);
+    };
+    BatComponent.prototype.zoomOutImage = function () {
+        this.scale /= this.scaleMultiplier;
+        this.reDraw(this.scale, this.translatePositionX, this.translatePositionY);
+        //this.reDraw(1,0,0);
     };
     return BatComponent;
 }());
